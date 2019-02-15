@@ -13,7 +13,10 @@
 </head>
 <body class="grey">
   <div class="container grey amber-text text-lighten-5">
-      <!-- Modal Structure -->
+     
+    <!-- Begin Modals -->
+
+    <!-- Remove Task -->
     <div id="modal1" class="modal">
       <div class="modal-content">
         <h4 style="color: #333;">Remove this task?</h4>
@@ -23,6 +26,7 @@
         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
       </div>
     </div>
+    <!-- Clear Tasks -->
     <div id="modal2" class="modal">
       <div class="modal-content">
         <h4 style="color: #333;">Clear all tasks?</h4>
@@ -32,6 +36,7 @@
         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
       </div>
     </div>
+    <!-- Edit Task -->
     <div id="edit" class="modal">
       <div class="modal-content">
         <h4 style="color: #333;">Edit Item</h4>
@@ -39,12 +44,24 @@
           <input type="text" name="edit-task" id="edit-task">
           <label for="edit-task">Rename Task</label>
         </div>
-        <a href="#" class="btn confirm-edit">Save</a>
+        <a href="" class="btn confirm-edit">Save</a>
       </div>
       <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
       </div>
     </div>
+    <!-- Empty Task -->
+    <div id="empty-task" class="modal">
+      <div class="modal-content">
+        <h4 style="color: #333;" >Add a task</h4>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Okay</a>
+      </div>
+    </div>
+
+    <!-- End Modals -->
+    
     <div class="row">
       <div class="col s12">
         <div id="main" class="card grey darken-3">
@@ -56,7 +73,7 @@
                   <input type="text" name="task" id="task">
                   <label for="task">New Task</label>
                 </div>
-                <input type="submit" value="Add Task" class="btn">
+                <button id="new-task" type="submit" class="btn new-task modal-trigger">Add Task</button>
               </form>
             </div>
           </div>
@@ -66,27 +83,27 @@
                 <input type="text" name="filter" id="filter">
                 <label for="filter">Filter Tasks</label>
               </div>
-              <ul class="collection"></ul>
-              <button data-target="modal2" class="clear-tasks btn grey darken-4 modal-trigger">Clear Tasks</button>
+            <ul class="collection"></ul>
+            <button data-target="modal2" class="clear-tasks btn grey darken-4 modal-trigger">Clear Tasks</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-    <script src="app.js"></script>  
-    <!-- JQuery -->
-    <script
-    src="https://code.jquery.com/jquery-3.3.1.js"
-    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous"></script>
-    <!-- Materialze CSS Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script>
-    // Init modal
-    $(document).ready(function(){
-      $('.modal').modal();
-    });
-    </script>
+  <script src="app.js"></script>  
+  <!-- JQuery -->
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  <!-- Materialze CSS Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+  /*  Init modal */
+  $(document).ready(function(){
+    $('.modal').modal();
+  });
+  </script>
 </body>
 </html>

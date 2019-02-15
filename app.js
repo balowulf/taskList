@@ -1,6 +1,7 @@
 // Define UI Variables
 const form          = document.querySelector('#task-form');
 const taskList      = document.querySelector('.collection');
+const newTask       = document.querySelector('.new-task');
 const clearBtn      = document.querySelector('.clear-tasks');
 const filter        = document.querySelector('#filter');
 const taskInput     = document.querySelector('#task');
@@ -48,7 +49,11 @@ function getTasks() {
 
 function addTask(e) {
   if (taskInput.value === '') {
-    alert('Add a task');
+    /* 
+      TODO
+        1. trigger the empty-task modal 
+    */
+    return;
   }
   const li = document.createElement('li');
   li.className = 'collection-item';
@@ -101,9 +106,8 @@ function editDeleteTask(e) {
       let tasks = JSON.parse(localStorage.getItem('tasks'));
       tasks.forEach(task => {
         if (task === taskItem.textContent) {
-          removeTaskFromLocalStorage(taskItem);
           task = confirmEdit.previousElementSibling.children[0].value;
-          storeTaskInLocalStorage(task);
+          replaceTask(taskItem.textContent, task);
         }
       });
     });
@@ -125,6 +129,25 @@ function removeTaskFromLocalStorage(taskItem) {
     }
   });
 
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function replaceTask(oldTask, newTask) {
+  let tasks;
+
+  if (localStorage.getItem('tasks') === null) {
+    tasks = [];
+  } else {
+    tasks = JSON.parse(localStorage.getItem('tasks'));
+  }
+
+  tasks.forEach((task, index) => {
+    if (oldTask === task) {
+      tasks[index] = newTask;
+      console.log(tasks);
+    }
+  });
+  
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
