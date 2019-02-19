@@ -14,13 +14,23 @@ loadEventListeners();
 
 function loadEventListeners() {
   document.addEventListener('DOMContentLoaded', getTasks);
-  form.addEventListener('submit', addTask);
   taskList.addEventListener('click', editDeleteTask);
   clearBtn.addEventListener('click', clearTasks);
   filter.addEventListener('keyup', filterTasks);
+  newTask.addEventListener('click', checkEmptyTask);
 }
 
 // Event Listener Functions
+function checkEmptyTask(e) {
+  if (taskInput.value === '') {
+    e.target.setAttribute('data-target', 'empty-task');
+  } else {
+    e.target.removeAttribute('data-target');
+    addTask();
+  }
+}
+
+
 function getTasks() {
   let tasks;
 
@@ -48,13 +58,6 @@ function getTasks() {
 }
 
 function addTask(e) {
-  if (taskInput.value === '') {
-    /* 
-      TODO
-        1. trigger the empty-task modal 
-    */
-    return;
-  }
   const li = document.createElement('li');
   li.className = 'collection-item';
   li.style.background = '#333';
@@ -73,7 +76,6 @@ function addTask(e) {
   taskInput.value = '';
   
   e.preventDefault();
-}
 
 function storeTaskInLocalStorage(task) {
   let tasks;
