@@ -1,3 +1,17 @@
+// Initialize Modals
+$(document).ready(function(){
+  $('.modal').modal({
+  });
+});
+
+$(document).ready(function(){
+  $('#new-task').modal({
+    onCloseEnd: function() {
+      addTask();
+    }
+  });
+});
+
 // Define UI Variables
 const form          = document.querySelector('#task-form');
 const taskList      = document.querySelector('.collection');
@@ -8,6 +22,7 @@ const taskInput     = document.querySelector('#task');
 const confirmDelete = document.querySelector('.confirm-delete');
 const confirmEdit   = document.querySelector('.confirm-edit');
 const confirmClear  = document.querySelector('.confirm-clear');
+const newTaskModal  = document.querySelector('#new-task');
 
 // Load all event listeners
 loadEventListeners();
@@ -52,8 +67,16 @@ function checkEmptyTask(e) {
     e.target.setAttribute('data-target', 'empty-task');
   } else {
     e.target.removeAttribute('data-target');
-    addTask();
+    openNewTaskModal(e);
   }
+}
+
+function openNewTaskModal(e) {
+  if (e.target.classList.contains('new-task')) {
+    e.target.setAttribute('data-target', 'new-task')
+    // Insert task name as title in modal popup
+    newTaskModal.firstElementChild.firstElementChild.textContent = taskInput.value;
+  };
 }
 
 function addTask(e) {
@@ -70,14 +93,30 @@ function addTask(e) {
   li.appendChild(deleteLink);
   li.appendChild(editLink);
   taskList.appendChild(li);
-  storeTaskInLocalStorage(taskInput.value);
-
-  taskInput.value = '';
   
-  e.preventDefault();
+  let newTaskDescription = document.querySelector('#new-task-description').value;
+  let newTaskDue         = document.querySelector('#new-task-due').value;
+  let newTaskPriority    = document.querySelector('#new-task-priority').value;
+
+  console.log(newTaskDescription);
+  console.log(newTaskDue);
+  console.log(newTaskPriority);
+  
+  storeTaskInLocalStorage(JSON.parse(
+    `{
+      "title": "${taskInput.value}", 
+      "description": "${newTaskDescription}", 
+      "due": "${newTaskDue}", 
+      "priority": "${newTaskPriority}"
+    }`
+  )); // TODO: pass object containing inputs from addTask modal
+  
+  taskInput.value = '';
+
+  
 }
 
-  function storeTaskInLocalStorage(task) {
+function storeTaskInLocalStorage(task) {
   let tasks;
 
   if (localStorage.getItem('tasks') === null) {
@@ -90,7 +129,10 @@ function addTask(e) {
     tasks.push(task);
   } 
 
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+  console.log(tasks);
+
+  // localStorage.setItem('tasks', JSON.stringify(tasks));
+  localStorage.setItem('tasks', tasks[0]);
 }
 
 function editDeleteTask(e) {
@@ -136,7 +178,6 @@ function removeTaskFromLocalStorage(taskItem) {
 
 function replaceTask(oldTask, newTask) {
   if (newTask === '') {
-    
     return;
   }
 
