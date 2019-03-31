@@ -37,27 +37,28 @@ function loadEventListeners() {
 
 // Event Listener Functions
 function getTasks() {
-  let tasks;
+  let tasksArray = [];
 
   if (localStorage.getItem('tasks') === null) {
-    tasks = [];
+    return;
   } else {
-    tasks = JSON.parse(localStorage.getItem('tasks'));
+    // let storedTasks = JSON.parse(localStorage.getItem('tasks'));
+    let storedTasks = localStorage.getItem('tasks');
+    tasksArray.push(storedTasks);
   }
 
-  tasks.forEach(function(task) {
+  tasksArray.forEach(task => {
     const li = document.createElement('li');
     li.className = 'collection-item';
     li.style.background = '#333';
-    li.appendChild(document.createTextNode(task));
+    li.appendChild(document.createTextNode(JSON.parse(task).title));
     const deleteLink = document.createElement('a');
     const editLink = document.createElement('a');
     deleteLink.className = 'delete-item secondary-content modal-trigger';
-    deleteLink.innerHTML = '<i class="fa fa-remove"></i>';
+    deleteLink.innerHTML = '<class="fa fa-remove"></i>';
     editLink.className = 'edit-item secondary-content modal-trigger';
-    editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+    editLink.innerHTML = '<i class="fa fa-pencil-square-i" aria-hidden"true"></i>';
     li.appendChild(deleteLink);
-    li.appendChild(editLink);
     taskList.appendChild(li);
   });
 }
@@ -97,42 +98,22 @@ function addTask(e) {
   let newTaskDescription = document.querySelector('#new-task-description').value;
   let newTaskDue         = document.querySelector('#new-task-due').value;
   let newTaskPriority    = document.querySelector('#new-task-priority').value;
-
-  console.log(newTaskDescription);
-  console.log(newTaskDue);
-  console.log(newTaskPriority);
   
-  storeTaskInLocalStorage(JSON.parse(
-    `{
-      "title": "${taskInput.value}", 
-      "description": "${newTaskDescription}", 
-      "due": "${newTaskDue}", 
-      "priority": "${newTaskPriority}"
-    }`
-  )); // TODO: pass object containing inputs from addTask modal
+  storeTaskInLocalStorage(`{"title": "${taskInput.value}","description": "${newTaskDescription}","due": "${newTaskDue}","priority": "${newTaskPriority}"}`);
   
   taskInput.value = '';
 
-  
 }
 
 function storeTaskInLocalStorage(task) {
-  let tasks;
 
   if (localStorage.getItem('tasks') === null) {
-    tasks = [];
+    localStorage.setItem('tasks', task);
   } else {
-    tasks = JSON.parse(localStorage.getItem('tasks'));
+    let newArray = [`${task}`];
+    newArray.push(localStorage.getItem('tasks'));
+    localStorage.setItem('tasks', JSON.stringify(newArray));
   }
-  
-  if (!tasks.includes(task)) {
-    tasks.push(task);
-  } 
-
-  console.log(tasks);
-
-  // localStorage.setItem('tasks', JSON.stringify(tasks));
-  localStorage.setItem('tasks', tasks[0]);
 }
 
 function editDeleteTask(e) {
@@ -192,7 +173,6 @@ function replaceTask(oldTask, newTask) {
   tasks.forEach((task, index) => {
     if (oldTask === task) {
       tasks[index] = newTask;
-      console.log(tasks);
     }
   });
   
@@ -202,7 +182,6 @@ function replaceTask(oldTask, newTask) {
 function clearTasks(e) {
     tasks = localStorage.getItem('tasks');
     if (tasks === null) {
-      console.log(e.target);
       e.target.removeAttribute('data-target');
     }
     e.target.href = '#modal2';
