@@ -42,20 +42,19 @@ function getTasks() {
   } else {
     let storedTasks = JSON.parse(localStorage.getItem('tasks'));
     // tasksArray.push(storedTasks);
-    console.table(storedTasks);
     storedTasks.forEach(task => {
       const li = document.createElement('li');
       li.className = 'collection-item';
       li.style.background = '#333';
       li.appendChild(document.createTextNode(task.title));
       const deleteLink = document.createElement('a');
-      const editLink = document.createElement('a');
+      // const editLink = document.createElement('a');
       deleteLink.className = 'delete-item secondary-content modal-trigger';
       deleteLink.innerHTML = '<i class="fa fa-remove"></i>';
-      editLink.className = 'edit-item secondary-content modal-trigger';
-      editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+      // editLink.className = 'edit-item secondary-content modal-trigger';
+      // editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
       li.appendChild(deleteLink);
-      li.appendChild(editLink);
+      // li.appendChild(editLink);
       taskList.appendChild(li);
     });
   }
@@ -73,7 +72,7 @@ function checkEmptyTask(e) {
 function openNewTaskModal(e) {
   if (e.target.classList.contains('new-task')) {
     e.target.setAttribute('data-target', 'new-task');
-    // Insert task name as title in modal popup
+    // Insert task name as title in modal
     newTaskModal.firstElementChild.firstElementChild.textContent =
       taskInput.value;
   }
@@ -85,13 +84,13 @@ function addTask(e) {
   li.style.background = '#333';
   li.appendChild(document.createTextNode(taskInput.value));
   const deleteLink = document.createElement('a');
-  const editLink = document.createElement('a');
+  // const editLink = document.createElement('a');
   deleteLink.className = 'delete-item secondary-content modal-trigger';
   deleteLink.innerHTML = '<i class="fa fa-remove"></i>';
-  editLink.className = 'edit-item secondary-content modal-trigger';
-  editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+  // editLink.className = 'edit-item secondary-content modal-trigger';
+  // editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
   li.appendChild(deleteLink);
-  li.appendChild(editLink);
+  // li.appendChild(editLink);
   taskList.appendChild(li);
 
   let newTaskDescription = document.querySelector('#new-task-description')
@@ -114,16 +113,11 @@ function addTask(e) {
 function storeTaskInLocalStorage(task) {
   let tasksArray = [];
   let storedTasks = JSON.parse(localStorage.getItem('tasks'));
+  console.table(storedTasks);
   if (storedTasks === null) {
     tasksArray.push(task);
     localStorage.setItem('tasks', JSON.stringify(tasksArray));
-  } else if (storedTasks.length === 1) {
-    // let storedTasks = JSON.parse(localStorage.getItem('tasks'));
-    tasksArray.push(storedTasks);
-    tasksArray.push(task);
-    // storedTasks.push(task);
-    localStorage.setItem('tasks', JSON.stringify(tasksArray));
-  } else if (storedTasks.length > 1) {
+  } else {
     storedTasks.push(task);
     localStorage.setItem('tasks', JSON.stringify(storedTasks));
   }
@@ -145,6 +139,7 @@ function editDeleteTask(e) {
       tasks.forEach(task => {
         if (task !== '' && task === taskItem.textContent) {
           task = confirmEdit.previousElementSibling.children[0].value;
+          console.log(task);
           replaceTask(taskItem.textContent, task);
         }
       });
@@ -160,8 +155,8 @@ function removeTaskFromLocalStorage(taskItem) {
     tasks = JSON.parse(localStorage.getItem('tasks'));
   }
   tasks.forEach((task, index) => {
-    if (taskItem.textContent === task) {
-      tasks.splice(index, 1);
+    if (taskItem.textContent === task.title) {
+      tasks.splice(task[index], 1);
     }
   });
   localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -182,7 +177,6 @@ function replaceTask(oldTask, newTask) {
       tasks[index] = newTask;
     }
   });
-
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
