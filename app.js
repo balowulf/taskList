@@ -22,6 +22,7 @@ const confirmDelete = document.querySelector('.confirm-delete');
 const confirmEdit = document.querySelector('.confirm-edit');
 const confirmClear = document.querySelector('.confirm-clear');
 const newTaskModal = document.querySelector('#new-task');
+const editTask = document.querySelector('#edit-task');
 
 // Load all event listeners
 loadEventListeners();
@@ -48,13 +49,13 @@ function getTasks() {
       li.style.background = '#333';
       li.appendChild(document.createTextNode(task.title));
       const deleteLink = document.createElement('a');
-      // const editLink = document.createElement('a');
+      const editLink = document.createElement('a');
       deleteLink.className = 'delete-item secondary-content modal-trigger';
       deleteLink.innerHTML = '<i class="fa fa-remove"></i>';
-      // editLink.className = 'edit-item secondary-content modal-trigger';
-      // editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+      editLink.className = 'edit-item secondary-content modal-trigger';
+      editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
       li.appendChild(deleteLink);
-      // li.appendChild(editLink);
+      li.appendChild(editLink);
       taskList.appendChild(li);
     });
   }
@@ -84,13 +85,13 @@ function addTask(e) {
   li.style.background = '#333';
   li.appendChild(document.createTextNode(taskInput.value));
   const deleteLink = document.createElement('a');
-  // const editLink = document.createElement('a');
+  const editLink = document.createElement('a');
   deleteLink.className = 'delete-item secondary-content modal-trigger';
   deleteLink.innerHTML = '<i class="fa fa-remove"></i>';
-  // editLink.className = 'edit-item secondary-content modal-trigger';
-  // editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+  editLink.className = 'edit-item secondary-content modal-trigger';
+  editLink.innerHTML = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
   li.appendChild(deleteLink);
-  // li.appendChild(editLink);
+  li.appendChild(editLink);
   taskList.appendChild(li);
 
   let newTaskDescription = document.querySelector('#new-task-description')
@@ -113,7 +114,6 @@ function addTask(e) {
 function storeTaskInLocalStorage(task) {
   let tasksArray = [];
   let storedTasks = JSON.parse(localStorage.getItem('tasks'));
-  console.table(storedTasks);
   if (storedTasks === null) {
     tasksArray.push(task);
     localStorage.setItem('tasks', JSON.stringify(tasksArray));
@@ -134,13 +134,13 @@ function editDeleteTask(e) {
   } else if (e.target.parentElement.classList.contains('edit-item')) {
     e.target.parentElement.href = '#edit';
     let taskItem = e.target.parentElement.parentElement;
+
     confirmEdit.addEventListener('click', () => {
       let tasks = JSON.parse(localStorage.getItem('tasks'));
       tasks.forEach(task => {
-        if (task !== '' && task === taskItem.textContent) {
-          task = confirmEdit.previousElementSibling.children[0].value;
-          console.log(task);
-          replaceTask(taskItem.textContent, task);
+        if (task.title !== '' && task.title === taskItem.textContent) {
+          task.title = editTask.value;
+          replaceTask(taskItem.textContent, task.title);
         }
       });
     });
@@ -172,9 +172,9 @@ function replaceTask(oldTask, newTask) {
   } else {
     tasks = JSON.parse(localStorage.getItem('tasks'));
   }
-  tasks.forEach((task, index) => {
-    if (oldTask === task) {
-      tasks[index] = newTask;
+  tasks.forEach(task => {
+    if (task.title === oldTask) {
+      task.title = newTask;
     }
   });
   localStorage.setItem('tasks', JSON.stringify(tasks));
