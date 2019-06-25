@@ -2,6 +2,8 @@
 
 ### Simple in-browser task list applicaton, built with vanilla JS and styled with Materialize CSS.  Utilizes browser Local Storage to persist data.
 
+### [Check It Out!](https://balowulf.github.io/taskList/)
+
 ![](tasklist.gif)
 
 ### ToDo:

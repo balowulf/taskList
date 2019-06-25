@@ -74,8 +74,7 @@ function openNewTaskModal(e) {
   if (e.target.classList.contains('new-task')) {
     e.target.setAttribute('data-target', 'new-task');
     // Insert task name as title in modal
-    newTaskModal.firstElementChild.firstElementChild.textContent =
-      taskInput.value;
+    newTaskModal.firstElementChild.firstElementChild.textContent = taskInput.value;
   }
 }
 
